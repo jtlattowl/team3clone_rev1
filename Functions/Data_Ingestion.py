@@ -33,23 +33,33 @@ def filter_xlsx_files(files):
     Parameters:
     files (list): A list of filenames.
     
-    Returns:
-    list: A list of .xlsx filenames.
-    """
-    return [file for file in files if file.endswith('.xlsx')]
-
 def read_xlsx_files_to_dataframes(directory, xlsx_files):
     """
-    Read .xlsx files into dataframes.
-    
+    Read .xlsx files into dataframes with error handling.
+
     Parameters:
     directory (str): The path to the directory containing the files.
     xlsx_files (list): A list of .xlsx filenames.
-    
+
     Returns:
     list: A list of dataframes.
     """
     dataframes = []
+    for file in xlsx_files:
+        file_path = os.path.join(directory, file)
+        if not os.path.exists(file_path):
+            print(f"Warning: The file {file_path} does not exist.")
+            continue
+        if not os.access(file_path, os.R_OK):
+            print(f"Warning: The file {file_path} is not readable.")
+            continue
+        try:
+            df = pd.read_excel(file_path)
+            dataframes.append(df)
+        except Exception as e:
+            print(f"Error reading {file_path}: {e}")
+    return dataframes
+
     for file in xlsx_files:
         file_path = os.path.join(directory, file)
         df = pd.read_excel(file_path)
