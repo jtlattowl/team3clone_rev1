@@ -172,6 +172,25 @@ def read_csv_files_to_dataframes(directory, csv_files):
         df = pd.read_csv(file_path)
         dataframes.append(df)
     return dataframes
+def filter_and_save_processed_data():
+    """
+    Read rpt_2014_combined from the data/processed folder, filter rows with "HB_HOUSTON" in the Settlement Point column,
+    and save the filtered dataframe to the data/final folder.
+    """
+    input_file = '../data/processed/rpt_2014_combined.csv'
+    output_file = '../data/final/rpt_2014_combined_filtered.csv'
+    
+    if not os.path.exists(input_file):
+        raise FileNotFoundError(f"The file {input_file} does not exist.")
+    
+    try:
+        df = pd.read_csv(input_file)
+        filtered_df = df[df['Settlement Point'] == 'HB_HOUSTON']
+        filtered_df.to_csv(output_file, index=False)
+        print(f"Filtered data saved to {output_file}")
+    except Exception as e:
+        print(f"An error occurred while processing the file: {e}")
+
 
 
 # In[ ]:
