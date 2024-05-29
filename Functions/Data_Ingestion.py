@@ -11,15 +11,20 @@ import pandas as pd
 
 def list_files_in_directory(directory):
     """
-    List all files in the given directory.
-    
+    List all files in the given directory with error handling.
+
     Parameters:
     directory (str): The path to the directory.
-    
+
     Returns:
     list: A list of filenames in the directory.
     """
+    if not os.path.exists(directory):
+        raise FileNotFoundError(f"The directory {directory} does not exist.")
+    if not os.access(directory, os.R_OK):
+        raise PermissionError(f"The directory {directory} is not readable.")
     return os.listdir(directory)
+
 
 def filter_xlsx_files(files):
     """
