@@ -63,25 +63,32 @@ def combine_dataframes(dataframes):
     """
     if not dataframes:
         raise ValueError("No dataframes to combine.")
-    return pd.concat(dataframes, ignore_index=True)
-
-        df = pd.read_excel(file_path)
-        dataframes.append(df)
-    return dataframes
-
-def combine_dataframes(dataframes):
-    """
-    Combine a list of dataframes into a single dataframe.
-    
-    Parameters:
-    dataframes (list): A list of dataframes.
-    
-    Returns:
-    DataFrame: A combined dataframe.
-    """
-    return pd.concat(dataframes, ignore_index=True)
-
 def main():
+    # Define the path to the parent directory
+    parent_dir = '..'
+
+    try:
+        # List all files in the parent directory
+        files_in_parent_dir = list_files_in_directory(parent_dir)
+
+        # Filter out the .xlsx files
+        xlsx_files = filter_xlsx_files(files_in_parent_dir)
+
+        # Read .xlsx files into dataframes
+        dataframes = read_xlsx_files_to_dataframes(parent_dir, xlsx_files)
+
+        # Combine all dataframes into a single dataframe
+        combined_df = combine_dataframes(dataframes)
+
+        # Display the combined dataframe
+        print(combined_df.head())
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    main()
+
     # Define the path to the parent directory
     parent_dir = '..'
     
