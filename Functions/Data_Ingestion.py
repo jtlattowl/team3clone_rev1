@@ -51,17 +51,20 @@ def read_xlsx_files_to_dataframes(directory, xlsx_files):
             print(f"Warning: The file {file_path} does not exist.")
             continue
         if not os.access(file_path, os.R_OK):
-            print(f"Warning: The file {file_path} is not readable.")
-            continue
-        try:
-            df = pd.read_excel(file_path)
-            dataframes.append(df)
-        except Exception as e:
-            print(f"Error reading {file_path}: {e}")
-    return dataframes
+def combine_dataframes(dataframes):
+    """
+    Combine a list of dataframes into a single dataframe.
 
-    for file in xlsx_files:
-        file_path = os.path.join(directory, file)
+    Parameters:
+    dataframes (list): A list of dataframes.
+
+    Returns:
+    DataFrame: A combined dataframe.
+    """
+    if not dataframes:
+        raise ValueError("No dataframes to combine.")
+    return pd.concat(dataframes, ignore_index=True)
+
         df = pd.read_excel(file_path)
         dataframes.append(df)
     return dataframes
